@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toppay OTP Verify</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 flex items-center justify-center p-4">
+  <div class="w-full max-w-sm bg-slate-900/80 border border-slate-800 rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] p-4">
+    <div class="flex items-center justify-between mb-4 px-1">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-black text-lg">
+          T
+        </div>
+        <div>
+          <p class="text-xs font-semibold tracking-wide text-slate-200">
+            Toppay Wallet
+          </p>
+          <p class="text-[10px] text-slate-400">OTP Verification</p>
+        </div>
+      </div>
+      <span class="px-2 py-1 rounded-full bg-amber-500/10 text-[10px] text-amber-300 border border-amber-400/40">
+        STEP 2
+      </span>
+    </div>
+
+    <div class="mb-3 px-1">
+      <p class="text-[11px] text-slate-400 mb-1">
+        Enter the 6-digit OTP sent to:
+      </p>
+      <p id="phoneDisplay" class="text-sm font-medium text-slate-100">
+        +91 XXXXXXXX
+      </p>
+    </div>
+
+    <form id="otpForm" class="space-y-3 px-1">
+      <div class="flex justify-between gap-2">
+        <input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box">
+      </div>
+
+      <style>
+        .otp-box {
+          @apply w-9 h-10 rounded-xl bg-slate-900 border border-slate-700 text-center text-slate-100 text-sm focus:outline-none focus:border-blue-500;
+        }
+      </style>
+
+      <div id="msg" class="hidden text-[11px] rounded-xl border px-3 py-2"></div>
+
+      <button
+        type="submit"
+        class="mt-1 w-full rounded-2xl bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 text-slate-950 font-semibold py-2 text-sm shadow-[0_12px_30px_rgba(0,0,0,0.5)] active:scale-95 transition">
+        Verify OTP
+      </button>
+
+      <p class="text-[11px] text-center text-slate-400 mt-1">
+        Didn’t get the code?
+        <span class="text-blue-300">Resend</span>
+      </p>
+    </form>
+  </div>
+
+  <script>
+    // Phone from URL
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const phone = params.get('phone') || '+91 XXXXXXXX';
+      document.getElementById('phoneDisplay').textContent = phone;
+    })();
+
+    const boxes = Array.from(document.querySelectorAll('.otp-box'));
+    boxes.forEach((box, idx) => {
+      box.addEventListener('input', () => {
+        if (box.value && idx < boxes.length - 1) {
+          boxes[idx + 1].focus();
+        }
+      });
+    });
+
+    const form = document.getElementById('otpForm');
+    const msgBox = document.getElementById('msg');
+
+    function showMsg(text, ok) {
+      msgBox.textContent = text;
+      msgBox.classList.remove('hidden');
+      if (ok) {
+        msgBox.classList.remove('border-red-500/60', 'bg-red-500/10', 'text-red-300');
+        msgBox.classList.add('border-emerald-400/60', 'bg-emerald-500/10', 'text-emerald-200');
+      } else {
+        msgBox.classList.remove('border-emerald-400/60', 'bg-emerald-500/10', 'text-emerald-200');
+        msgBox.classList.add('border-red-500/60', 'bg-red-500/10', 'text-red-300');
+      }
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const code = boxes.map(b => b.value.trim()).join('');
+
+      if (code.length < 4) {
+        showMsg('Valid OTP daaliye (demo ke liye koi bhi 4+ digits).', false);
+        return;
+      }
+
+      showMsg('OTP verify ho gaya (demo). Dashboard par jaa rahe hain…', true);
+
+      const params = new URLSearchParams(window.location.search);
+      const phone = params.get('phone') || '';
+      setTimeout(() => {
+        const url = '../dashboard/index.html?phone=' + encodeURIComponent(phone);
+        window.location.href = url;
+      }, 800);
+    });
+  </script>
+</body>
+</html>
