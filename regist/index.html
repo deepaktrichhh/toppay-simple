@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toppay Style Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 space-y-4">
+    <h1 class="text-2xl font-bold text-blue-600 text-center">Toppay Style Registration</h1>
+    <p class="text-sm text-gray-500 text-center">
+      Referral Code:
+      <span id="refCode" class="font-semibold text-blue-600">None</span>
+    </p>
+
+    <form id="regForm" class="space-y-3">
+      <input id="name" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Full Name" />
+      <input id="email" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Email" />
+      <input id="phone" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Phone Number" />
+      <input id="password" type="password" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Password" />
+      <input id="confirm" type="password" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Confirm Password" />
+      <input id="address" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Address" />
+      <input id="bank" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Bank Name" />
+      <input id="ifsc" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="IFSC Code" />
+      <input id="account" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="Account Number" />
+      <input id="upi" class="w-full border rounded-xl px-3 py-2 text-sm" placeholder="UPI ID" />
+
+      <input id="refInput" type="hidden" />
+
+      <button
+        type="submit"
+        class="w-full bg-blue-600 text-white font-semibold rounded-xl py-2 text-sm active:scale-95 transition"
+      >
+        Register
+      </button>
+    </form>
+
+    <p class="text-xs text-gray-400 text-center">
+      Demo site — data backend par save nahi ho raha, sirf front-end form hai.
+    </p>
+  </div>
+
+  <script>
+    // URL se ?code= read karna
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const span = document.getElementById('refCode');
+      const hidden = document.getElementById('refInput');
+      if (code) {
+        span.textContent = code;
+        hidden.value = code;
+      } else {
+        span.textContent = 'None';
+      }
+    })();
+
+    // Simple demo submit
+    document.getElementById('regForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      if (!name || !phone) {
+        alert('Name aur Phone zaroori hai.');
+        return;
+      }
+      alert('Demo: ' + name + ' (' + phone + ') registration save ho gaya (frontend only).');
+    });
+  </script>
+</body>
+</html>
