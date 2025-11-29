@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toppay Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 flex items-center justify-center p-4">
+  <div class="w-full max-w-sm bg-slate-900/80 border border-slate-800 rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] p-4 space-y-3">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-1">
+      <div>
+        <p class="text-[10px] text-slate-400">Wallet balance</p>
+        <p class="text-xl font-semibold text-emerald-300">₹ 12,540.75</p>
+      </div>
+      <div class="text-right">
+        <p id="phoneDisplay" class="text-[11px] text-slate-300">+91 XXXXXXXX</p>
+        <p class="text-[10px] text-emerald-400 flex items-center justify-end gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="grid grid-cols-4 gap-2 px-1">
+      <button class="action-btn">
+        <span class="circle">+</span>
+        <span>Add money</span>
+      </button>
+      <button class="action-btn">
+        <span class="circle">₹</span>
+        <span>Withdraw</span>
+      </button>
+      <button class="action-btn">
+        <span class="circle">⇄</span>
+        <span>Transfer</span>
+      </button>
+      <button class="action-btn">
+        <span class="circle">★</span>
+        <span>Rewards</span>
+      </button>
+    </div>
+
+    <style>
+      .action-btn {
+        @apply flex flex-col items-center justify-center rounded-2xl bg-slate-900 border border-slate-700 text-[10px] text-slate-300 py-2 gap-1;
+      }
+      .action-btn .circle {
+        @apply w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-xs text-white;
+      }
+    </style>
+
+    <!-- Card -->
+    <div class="px-1">
+      <div class="rounded-2xl p-3 bg-gradient-to-r from-blue-500/20 via-cyan-400/10 to-emerald-400/10 border border-blue-500/40">
+        <p class="text-[11px] text-slate-200 mb-1">
+          Invite &amp; Earn
+        </p>
+        <p class="text-[10px] text-slate-300 mb-2">
+          Har active user per <span class="text-emerald-300 font-semibold">₹50 bonus</span> (demo text).
+        </p>
+        <div class="flex items-center gap-2">
+          <input id="refLink" class="flex-1 rounded-xl bg-slate-950/70 border border-slate-700 px-2 py-1 text-[10px] text-slate-200" readonly />
+          <button id="copyBtn" class="px-2 py-1 rounded-xl bg-blue-500 text-[10px] text-white active:scale-95">
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transactions -->
+    <div class="px-1 space-y-1">
+      <p class="text-[11px] text-slate-400">Recent transactions</p>
+      <div class="space-y-1 text-[11px]">
+        <div class="flex items-center justify-between rounded-xl bg-slate-900 border border-slate-800 px-3 py-2">
+          <div>
+            <p class="text-slate-100">Deposit</p>
+            <p class="text-slate-500 text-[10px]">UPI • Today 10:22 AM</p>
+          </div>
+          <p class="text-emerald-300 font-semibold">+ ₹2,000</p>
+        </div>
+        <div class="flex items-center justify-between rounded-xl bg-slate-900 border border-slate-800 px-3 py-2">
+          <div>
+            <p class="text-slate-100">Withdrawal</p>
+            <p class="text-slate-500 text-[10px]">Bank • Yesterday</p>
+          </div>
+          <p class="text-red-300 font-semibold">- ₹1,000</p>
+        </div>
+        <div class="flex items-center justify-between rounded-xl bg-slate-900 border border-slate-800 px-3 py-2">
+          <div>
+            <p class="text-slate-100">Reward credit</p>
+            <p class="text-slate-500 text-[10px]">Referral bonus</p>
+          </div>
+          <p class="text-emerald-300 font-semibold">+ ₹50</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="mt-2 px-1">
+      <div class="flex items-center justify-between rounded-2xl bg-slate-950/80 border border-slate-800 px-4 py-2 text-[10px] text-slate-400">
+        <a href="../dashboard/index.html" class="flex flex-col items-center gap-0.5 text-emerald-300">
+          <span>🏠</span><span>Home</span>
+        </a>
+        <a href="../regist/index.html" class="flex flex-col items-center gap-0.5">
+          <span>➕</span><span>Register</span>
+        </a>
+        <a href="../login/index.html" class="flex flex-col items-center gap-0.5">
+          <span>👤</span><span>Account</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Phone from URL
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const phone = params.get('phone') || '+91 XXXXXXXX';
+      document.getElementById('phoneDisplay').textContent = phone;
+
+      const base = 'https://deepaktrichhh.github.io/toppay-simple/regist/?code=';
+      const code = 'REF' + (phone.replace(/\D/g, '').slice(-4) || '0000');
+      document.getElementById('refLink').value = base + encodeURIComponent(code);
+    })();
+
+    document.getElementById('copyBtn').addEventListener('click', function () {
+      const input = document.getElementById('refLink');
+      input.select();
+      input.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+      } catch (e) {}
+      this.textContent = 'Copied!';
+      setTimeout(() => (this.textContent = 'Copy'), 1200);
+    });
+  </script>
+</body>
+</html>
